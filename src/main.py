@@ -19,7 +19,7 @@ async def main():
     app.include_router(front_router)
     app.include_router(api_router)
     app.add_api_route("/favicon.ico", favicon)
-    config = uvicorn.Config(app, port=6969)
+    config = uvicorn.Config(app, host="0.0.0.0", port=6969)
     server = uvicorn.Server(config)
     await server.serve()
 

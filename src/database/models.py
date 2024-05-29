@@ -9,6 +9,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     login = Column(String, unique=True)
     password = Column(String)
+    money = Column(Float)
     transactions = relationship("Transaction", back_populates="owner")
 
     def count_stocks(self):

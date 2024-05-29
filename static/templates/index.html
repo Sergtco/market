@@ -15,12 +15,20 @@
                 body: JSON.stringify({"name": name})
             }).then((response) => {if (response.status == 200) {location.reload();} });
         }
+        function sellStock(name) {
+            fetch("/api/sell_stock", {
+                method: "POST",
+                body: JSON.stringify({"name": name})
+            }).then((response) => {if (response.status == 200) {location.reload();} });
+        }
     </script>
     <h1>Welkome to my stokc makret</h1>
     <p>Your stocks:</p>
     {% for name, amount in user.count_stocks().items()%}
     <p>{{name}} : {{amount}}</p>
     {% endfor %}
+
+    <p>Your money:{{user.money}}</p>
     <ul>
         {% for stock in stocks %}
         <li>
@@ -28,6 +36,7 @@
                 <a>{{stock.name}}</a>
                 <a>{{stock.amount}}/{{stock.max_amount}}</a>
                 <button onclick="buyStock('{{stock.name}}')">Buy: {{stocks[stock]}}₽</button>
+                <button onclick="sellStock('{{stock.name}}')">Sell: {{stocks[stock]-1}}₽</button>
             </div>
         </li>
         {% endfor %}

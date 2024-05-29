@@ -17,6 +17,8 @@ async def buy_stock(request: Request, db: Session = Depends(get_db)):
         stock = stock["name"]
         user = schemas.User.model_validate(crud.find_user(db, decoded["login"]))
         if user is not None:
+            if user.money <= 0:
+                return Response(status_code=400)
             pass
         else:
             return
@@ -24,4 +26,24 @@ async def buy_stock(request: Request, db: Session = Depends(get_db)):
         print(e)
         return
     crud.buy_stock(db, user.id, stock)
+    return Response()
+
+
+@Router.post("/api/sell_stock")
+async def sell_stock(request: Request, db: Session = Depends(get_db)):
+    try:
+        decoded = jwt.decode(request.cookies["token"], KEY, algorithms=["HS256"])
+        stock = await request.json()
+        stock = stock["name"]
+        userMod = crud.find_user(db, decoded["login"])
+        user = schemas.User.model_validate(userMod)
+        if user is not None:
+            if userMod is not None and userMod.count_stocks()[stock] > 0:
+                pass
+        else:
+            return Response(status_code=400)
+    except Exception as e:
+        print(e)
+        return
+    crud.sell_stock(db, user.id, stock)
     return Response()

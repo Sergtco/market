@@ -45,6 +45,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    money: float
     transactions: list[Transaction] = []
 
     model_config = ConfigDict(from_attributes=True)
